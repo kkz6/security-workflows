@@ -23,11 +23,17 @@ jobs:
           repository: kkz6/security-workflows
           path: .security-workflows
 
-      - name: Run Semgrep
+      - name: Run focused supply-chain checks
         run: >-
           semgrep scan
           --error
           --metrics=off
           --config .security-workflows/semgrep.yml
+          .
+
+      - name: Run advisory security audit
+        run: >-
+          semgrep scan
+          --metrics=off
           --config p/security-audit
           .
