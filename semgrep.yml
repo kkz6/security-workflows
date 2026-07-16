@@ -1,0 +1,46 @@
+rules:
+  - id: obfuscated-eval-in-project-config
+    message: Obfuscated eval/atob execution in a project configuration file may indicate an injected supply-chain payload.
+    severity: ERROR
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/*.config.js"
+        - "**/*.config.cjs"
+        - "**/*.config.mjs"
+        - "**/*.config.ts"
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: Function(...)
+
+  - id: process-spawn-in-project-config
+    message: Spawning a process from a project configuration file is dangerous and requires explicit security review.
+    severity: ERROR
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/*.config.js"
+        - "**/*.config.cjs"
+        - "**/*.config.mjs"
+        - "**/*.config.ts"
+    pattern-either:
+      - pattern: $CP.spawn(...)
+      - pattern: $CP.spawnSync(...)
+      - pattern: $CP.exec(...)
+      - pattern: $CP.execSync(...)
+
+  - id: encoded-payload-execution
+    message: Decoding data and passing it to eval is a strong indicator of an obfuscated executable payload.
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: eval(atob(...))
+
+  - id: dynamic-child-process-load
+    message: Dynamically loading child_process through computed properties is a common obfuscation technique.
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern-either:
+          - pattern: require("child_process")[...](...)
+          - pattern: require($MODULE)[...](...)
