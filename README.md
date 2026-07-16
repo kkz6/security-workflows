@@ -2,9 +2,10 @@
 
 Reusable security scanning for repositories owned by `kkz6`.
 
-The central workflow runs Semgrep's security and secret rules alongside local
-rules for obfuscated executable payloads in JavaScript and TypeScript project
-configuration files.
+The central workflow runs Semgrep's security audit rules alongside local rules
+for obfuscated executable payloads in JavaScript and TypeScript project
+configuration files. Repository secret scanning remains GitHub's responsibility
+to avoid blocking on known fixture hashes and other non-secret test data.
 
 Caller repositories use:
 
